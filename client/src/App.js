@@ -10,7 +10,10 @@ function App() {
   const [marca,setMarca] = useState(""); 
   const [detalle,setDetalle] = useState(""); 
   const [aroma,setAroma] = useState(""); 
-  const [precio,setPrecio] = useState(0); 
+  const [precio,setPrecio] = useState(); 
+  const [id,setId] = useState(0); 
+
+  const [editar,setEditar] = useState(false);
 
   const [perfumesList, setPerfumes] = useState([]);
 
@@ -23,9 +26,46 @@ function App() {
       precio: precio
     }).then(()=>{
       getPerfumes();
-      alert("Perfume registrado");
+      limpiarCampos();
     });
   }
+
+  const update = ()=>{
+    Axios.put("http://localhost:3001/update",{
+      id: id,
+      nombre: nombre,
+      marca: marca,
+      detalle: detalle,
+      aroma: aroma,
+      precio: precio
+    }).then(()=>{
+      getPerfumes();
+      limpiarCampos();
+    });
+  }
+
+
+  const limpiarCampos = ()=>{
+    setNombre("");
+    setMarca("");
+    setDetalle("");
+    setAroma("");
+    setPrecio("");
+    setId("");
+    setEditar(false);
+  }
+
+  const editarPerfume = (val) =>{
+    setEditar(true);
+
+    setNombre(val.nombre);
+    setMarca(val.marca);
+    setDetalle(val.detalle);
+    setAroma(val.aroma);
+    setPrecio(val.precio);
+    setId(val.id);
+  }
+
 
   const getPerfumes = ()=> {
     Axios.get("http://localhost:3001/perfumes").then((response)=>{
@@ -34,9 +74,6 @@ function App() {
   }
 
   getPerfumes();
-
-
-
 
 
   return (
@@ -54,12 +91,12 @@ function App() {
          onChange={(event)=>{
           setNombre(event.target.value);
         }}
-    className="form-control" placeholder="Ingrese Nombre" aria-label="Username" aria-describedby="basic-addon1"/>
+    className="form-control" value = {nombre} placeholder="Ingrese Nombre" aria-label="Username" aria-describedby="basic-addon1"/>
     </div>
 
     <div className="input-group mb-3">
     <span className="input-group-text" id="basic-addon1">Marca:</span>
-    <input type="text" 
+    <input type="text" value = {marca} 
         onChange={(event)=>{
           setMarca(event.target.value);
           }}
@@ -68,7 +105,7 @@ function App() {
 
     <div className="input-group mb-3">
     <span className="input-group-text" id="basic-addon1">Detalle:</span>
-    <input type="text" 
+    <input type="text" value = {detalle} 
         onChange={(event)=>{
           setDetalle(event.target.value);
           }} 
@@ -77,7 +114,7 @@ function App() {
 
     <div className="input-group mb-3">
     <span className="input-group-text" id="basic-addon1">Aroma:</span>
-    <input type="text" 
+    <input type="text" value = {aroma} 
         onChange={(event)=>{
           setAroma(event.target.value);
           }}
@@ -86,7 +123,7 @@ function App() {
 
     <div className="input-group mb-3">
     <span className="input-group-text" id="basic-addon1">Precio:</span>
-    <input type="number" 
+    <input type="number" value = {precio} 
         onChange={(event)=>{
           setPrecio(event.target.value);
           }}
@@ -94,8 +131,16 @@ function App() {
     </div>
    </div>
 
-   <div className="card-footer text-body-secondary">
-   <button className = 'btn btn-success' onClick={add}>Registrar</button>
+   <div className="card-footer text-muted">
+
+      {
+        editar?
+        <div>
+        <button className = 'btn btn-warning m-2' onClick={update}>Actualizar</button>
+        <button className = 'btn btn-info m-2' onClick={limpiarCampos}>Cancelar</button>
+        </div>
+        :<button className = 'btn btn-success' onClick={add}>Registrar</button>
+      }
     </div>
 
     <table className="table">
@@ -107,6 +152,7 @@ function App() {
       <th scope="col">Detalle</th>
       <th scope="col">Aroma</th>
       <th scope="col">Precio</th>
+      <th scope="col">Acciones</th>
     </tr>
   </thead>
   <tbody>
@@ -119,6 +165,16 @@ function App() {
           <td>{val.detalle}</td>
           <td>{val.aroma}</td>
           <td>{val.precio}</td>
+          <td>
+          <div className="btn-group" role="group" aria-label="Basic example">
+          <button type="button"
+          onClick={()=>{
+            editarPerfume(val)
+          }}
+          className="btn btn-info">Editar</button>
+          <button type="button" className="btn btn-danger">Eliminar</button>
+          </div>
+          </td>
           </tr>
         })
       }

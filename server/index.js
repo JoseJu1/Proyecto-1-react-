@@ -34,7 +34,6 @@ app.post("/create",(req,res)=>{
 });
 
 app.get("/perfumes",(req,res)=>{
-
     db.query('SELECT * FROM perfumes',
     (err,result)=>{
         if(err){
@@ -42,6 +41,26 @@ app.get("/perfumes",(req,res)=>{
         }
         else{
             res.send(result);
+        }
+    }
+    );
+});
+
+app.put("/update",(req,res)=>{
+    const id = req.body.id;
+    const nombre = req.body.nombre;
+    const marca = req.body.marca;
+    const detalle = req.body.detalle;
+    const aroma = req.body.aroma;
+    const precio = req.body.precio;
+
+    db.query('UPDATE perfumes SET nombre=?,marca=?,detalle=?,aroma=?,precio=? WHERE id=?', [nombre,marca,detalle,aroma,precio,id],
+    (err,result)=>{
+        if(err){
+            console.log(err);
+        }
+        else{
+            res.send("Perfumes actualizado con exito");
         }
     }
     );
