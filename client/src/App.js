@@ -247,10 +247,10 @@ function App() {
           onClick={()=>{
             editarPerfume(val)
           }}
-          className="btn btn-info">Editar</button>
+          className="btn btn-info m-2">Editar</button>
           <button type="button" onClick={()=>{
             deletePerfu(val);
-          }} className="btn btn-danger">Eliminar</button>
+          }} className="btn btn-danger m-2">Eliminar</button>
           </div>
           </td>
           </tr>
