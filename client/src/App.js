@@ -9,6 +9,8 @@ import Swal from 'sweetalert2'
 
 function App() {
 
+  //DECLARACIÓN DE VARIABLES
+
   const [nombre,setNombre] = useState(""); 
   const [marca,setMarca] = useState(""); 
   const [detalle,setDetalle] = useState(""); 
@@ -19,6 +21,8 @@ function App() {
   const [editar,setEditar] = useState(false);
 
   const [perfumesList, setPerfumes] = useState([]);
+
+  //METODO DE REGISTRO
 
   const add = ()=>{
     Axios.post("http://localhost:3001/create",{
@@ -44,6 +48,8 @@ function App() {
       })
     });
   }
+
+  //METODO DE ACTUALIZACIÓN DE DATOS
 
   const update = ()=>{
     Axios.put("http://localhost:3001/update",{
@@ -71,6 +77,7 @@ function App() {
     });
   }
 
+//METODO DE ELIMINACIÓN DE DATOS
 
   const deletePerfu = (val)=>{
 
@@ -108,6 +115,8 @@ function App() {
   }
 
 
+  //METODO PARA BORRAR CAMPOS AL MOMENTO DE REGISTRO Y ACTUALIZACIÓN DE DATOS
+
   const limpiarCampos = ()=>{
     setNombre("");
     setMarca("");
@@ -117,6 +126,8 @@ function App() {
     setId("");
     setEditar(false);
   }
+
+  //METODO PARA LA ACTUALIZACIÓN DE DATOS
 
   const editarPerfume = (val) =>{
     setEditar(true);
@@ -129,6 +140,7 @@ function App() {
     setId(val.id);
   }
 
+  //METODO PARA EL INGRESO DE DATOS, MEDIANTE LINK, PUERTO, Y DATA
 
   const getPerfumes = ()=> {
     Axios.get("http://localhost:3001/perfumes").then((response)=>{
@@ -138,6 +150,7 @@ function App() {
 
   getPerfumes();
 
+  //PÁGINA WEB CON TODOS SUS CARACTERISITCAS, TABLAS Y ESTILOS
 
   return (
     <div className="container">
