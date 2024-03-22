@@ -3,6 +3,9 @@ import {useState} from "react";
 import Axios from "axios";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+import Swal from 'sweetalert2'
+
+
 
 function App() {
 
@@ -27,6 +30,12 @@ function App() {
     }).then(()=>{
       getPerfumes();
       limpiarCampos();
+      Swal.fire({
+        title: '<strong>Registro Exitoso!</strong>',
+        html: '<i>El Perfume <strong>'+nombre+'</strong> fue registrado con exito!!</i>',
+        icon: 'success',
+        timer: 3000
+      })
     });
   }
 
@@ -41,6 +50,12 @@ function App() {
     }).then(()=>{
       getPerfumes();
       limpiarCampos();
+      Swal.fire({
+        title: '<strong>Actualización Exitosa!</strong>',
+        html: '<i>El Perfume <strong>'+nombre+'</strong> fue actualizado con exito!!</i>',
+        icon: 'success',
+        timer: 3000
+      })
     });
   }
 
