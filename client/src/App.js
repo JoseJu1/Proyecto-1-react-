@@ -35,6 +35,12 @@ function App() {
         html: '<i>El Perfume <strong>'+nombre+'</strong> fue registrado con exito!!</i>',
         icon: 'success',
         timer: 3000
+      }).catch(function(error){
+        Swal.fire({
+          icon: 'error',
+          title: 'Opss...',
+          text: JSON.parse(JSON.stringify(error)).message==="Network Error"?"Intente más Tarde":JSON.parse(JSON.stringify(error)).message
+        })
       })
     });
   }
@@ -55,21 +61,49 @@ function App() {
         html: '<i>El Perfume <strong>'+nombre+'</strong> fue actualizado con exito!!</i>',
         icon: 'success',
         timer: 3000
+      }).catch(function(error){
+        Swal.fire({
+          icon: 'error',
+          title: 'Opss...',
+          text: JSON.parse(JSON.stringify(error)).message==="Network Error"?"Intente más Tarde":JSON.parse(JSON.stringify(error)).message
+        })
       })
     });
   }
 
 
-  const deletePerfu = (id)=>{
-    Axios.delete(`http://localhost:3001/delete${id}`).then(()=>{
-      getPerfumes();
-      limpiarCampos();
-      Swal.fire({
-        title: '<strong>Eliminación Exitosa!</strong>',
-        html: '<i>El Perfume <strong>'+nombre+'</strong> fue eliminado con exito!!</i>',
-        icon: 'success',
-        timer: 3000
-      })
+  const deletePerfu = (val)=>{
+
+    Swal.fire({
+      title: "Confirmar eliminación?",
+      html: '<i>Desea eliminar el Perfume <strong>'+val.nombre+'</strong>?</i>',
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si elimarlo!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Axios.delete(`http://localhost:3001/delete${val.id}`).then(()=>{
+          getPerfumes();
+          limpiarCampos();
+                  
+        Swal.fire({
+          icon: 'success',
+          text: val.nombre+' fue eliminado',
+          showConfirmButton: false,
+          timer: 3000
+        }
+        );
+        }).catch(function(error){
+          Swal.fire({
+            icon: 'error',
+            title: 'Opss...',
+            text: 'No se logro eliminar el perfume',
+            footer: JSON.parse(JSON.stringify(error)).message==="Network Error"?"Intente más Tarde":JSON.parse(JSON.stringify(error)).message
+          })
+        })
+      }
     });
   }
 
@@ -202,7 +236,7 @@ function App() {
           }}
           className="btn btn-info">Editar</button>
           <button type="button" onClick={()=>{
-            deletePerfu(val.id);
+            deletePerfu(val);
           }} className="btn btn-danger">Eliminar</button>
           </div>
           </td>
