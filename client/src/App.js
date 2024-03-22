@@ -60,6 +60,20 @@ function App() {
   }
 
 
+  const deletePerfu = (id)=>{
+    Axios.delete(`http://localhost:3001/delete${id}`).then(()=>{
+      getPerfumes();
+      limpiarCampos();
+      Swal.fire({
+        title: '<strong>Eliminación Exitosa!</strong>',
+        html: '<i>El Perfume <strong>'+nombre+'</strong> fue eliminado con exito!!</i>',
+        icon: 'success',
+        timer: 3000
+      })
+    });
+  }
+
+
   const limpiarCampos = ()=>{
     setNombre("");
     setMarca("");
@@ -187,7 +201,9 @@ function App() {
             editarPerfume(val)
           }}
           className="btn btn-info">Editar</button>
-          <button type="button" className="btn btn-danger">Eliminar</button>
+          <button type="button" onClick={()=>{
+            deletePerfu(val.id);
+          }} className="btn btn-danger">Eliminar</button>
           </div>
           </td>
           </tr>

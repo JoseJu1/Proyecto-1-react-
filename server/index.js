@@ -27,7 +27,7 @@ app.post("/create",(req,res)=>{
             console.log(err);
         }
         else{
-            res.send("Perfumes registrados con exito");
+            res.send(result);
         }
     }
     );
@@ -60,7 +60,22 @@ app.put("/update",(req,res)=>{
             console.log(err);
         }
         else{
-            res.send("Perfumes actualizado con exito");
+            res.send(result);
+        }
+    }
+    );
+});
+
+app.delete("/delete:id",(req,res)=>{
+    const id = req.params.id;
+
+    db.query('DELETE FROM perfumes WHERE id=?',id,
+    (err,result)=>{
+        if(err){
+            console.log(err);
+        }
+        else{
+            res.send(result);
         }
     }
     );
